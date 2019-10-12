@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+	<title>Sugar High</title>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+    <script type="text/javascript" src="js/jquery.1.11.1.min.js"></script>
+</head>
+
+<body>
+
+    <h1>Sugar high</h1>
+	<form method="post" action="http://sugar-high.localhost/" onsubmit="return false">
+
+        <label for="candies">Candies - create masive from candy: </label><br />
+        <input id="candies" type="text" name="candies" pattern="([0-9, ]*)" title="You can add just numbers and
+        comma!" value="33, 20, 12, 19, 29"/>
+        <br /><br />
+
+        <label for="threshold">threshold: </label><br />
+        <input id="threshold" type="text" name="threshold"pattern="([0-9,]*)" title="You can add just one number!"
+               value="33"/>
+        <br />
+
+        <input type="submit" id="submit-button" value="Put candies" />
+
+    </form>
+	
+	<div id="result"></div>
+
+
+    <script type="text/javascript">
+
+        $('#submit-button').on('click', function () {
+
+            var candies     = $("#candies").val();
+            var threshold   = $("#threshold").val();
+
+            var candiesArr  = candies.split(' ').join('').split(',');
+
+            sugarHigh(candiesArr, threshold);
+
+        });
+
+
+        function sugarHigh(candies, threshold) {
+
+            //candies = [33, 20, 12, 19, 29]; threshold = 33
+            for ( i = 0; i < candies.length - 1; i++ ) {
+
+                var currentCandyI = parseInt(candies[i]);
+                threshold = parseInt(threshold);
+
+                //console.log('candy[i] = ' , candies[i]);
+
+                var currentSum = currentCandyI;
+				var currentIndexes = i;
+                if ( currentSum < threshold ) {
+					//console.log('index = ', currentIndexes);
+                    for (j = i + 1; j < candies.length; j++) {
+
+                        //console.log('candy[j] = ' , candies[j]);
+                        //debugger;
+
+                        var currentCandyJ = parseInt(candies[j]);
+                        //console.log('add candy J = ', currentCandyJ);
+                        var tempSum = currentSum + currentCandyJ;
+						
+                        //console.log('this is temp sum', tempSum);
+                         if ( tempSum <= threshold ) {
+                             currentSum += currentCandyJ;
+                             //console.log('current sum = ', currentSum);
+							 currentIndexes += ', ' + j;
+                         } else {
+                             //currentSum = currentCandyI;
+                             //break;
+                         }
+						 
+
+                    }
+					$('#result').append('indexes: ' + currentIndexes + '<br/>');
+                }
+
+                console.log('-----------------------');
+            }
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
